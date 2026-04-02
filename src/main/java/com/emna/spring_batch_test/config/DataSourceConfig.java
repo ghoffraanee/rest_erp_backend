@@ -13,25 +13,16 @@ import org.springframework.context.annotation.Primary;
 public class DataSourceConfig {
 
     @Bean
-    @ConfigurationProperties("app.datasource.superadmin")
-    public DataSourceProperties superAdminDataSourceProperties() {
-        return new DataSourceProperties();
-    }
-
-    @Bean(name = "superAdminDataSource")
-    public DataSource superAdminDataSource() {
-        return superAdminDataSourceProperties().initializeDataSourceBuilder().build();
-    }
-
-    @Bean
     @ConfigurationProperties("app.datasource.erp")
-    public DataSourceProperties erpDataSourceProperties() {
+    public DataSourceProperties sourceDataSourceProperties() {
         return new DataSourceProperties();
     }
 
-    @Bean(name = "erpDataSource")
-    public DataSource erpDataSource() {
-        return erpDataSourceProperties().initializeDataSourceBuilder().build();
+    @Bean(name = "sourceDataSource")
+    public DataSource sourceDataSource() {
+        return sourceDataSourceProperties()
+                .initializeDataSourceBuilder()
+                .build();
     }
 
     @Bean
@@ -40,10 +31,12 @@ public class DataSourceConfig {
         return new DataSourceProperties();
     }
 
-    @Bean(name = "dwDataSource")
+    @Bean(name = {"dataSource", "dwDataSource"})
     @Primary
     @BatchDataSource
     public DataSource dwDataSource() {
-        return dwDataSourceProperties().initializeDataSourceBuilder().build();
+        return dwDataSourceProperties()
+                .initializeDataSourceBuilder()
+                .build();
     }
 }
